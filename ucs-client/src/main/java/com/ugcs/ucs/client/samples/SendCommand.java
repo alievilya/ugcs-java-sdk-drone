@@ -157,9 +157,11 @@ public final class SendCommand {
                     PrintWriter out = new PrintWriter(clientSock.getOutputStream(), true);
 
                     fromClient = in.readLine();
-                    System.out.println("received: " + fromClient);
+
                     Map<String, Double> com_arg2 = new HashMap<String, Double>();
                     if (fromClient != null) {  // ДОБАВИТЬ JSON!!!!!!!!!!!!!
+                        System.out.println("received: " + fromClient);
+                        
                         if (fromClient.equals("exit")) {
                             toClient = "exiting";
                             System.out.println("send exiting");

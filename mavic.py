@@ -48,6 +48,9 @@ def sendcommand():
             command = "joystick"
         elif val == "0":
             command = "exit"
+        elif val == "q":
+            break
+
         # sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # sock.connect((HOST, PORT))
 
@@ -66,12 +69,8 @@ def sendcommand():
         # sock.close()
 
 
-commands = ["yaw,-0.2", "yaw,0.2", "yaw,-0.2"]
-commands2 = ["pitch,0.5", "throttle,0.02", "pitch,-0.5"]
+sendcommand()
 
-sendcommand()
-print("______\n")
-sendcommand()
 # java -cp .;* com.ugcs.ucs.client.samples.SendCommand -c joystick "EMU-101"
 # java -cp .;* com.ugcs.ucs.client.samples.SendCommand -c joystick "Mavic2EnterpriseDual-298cgbkr0a0a48"
 
