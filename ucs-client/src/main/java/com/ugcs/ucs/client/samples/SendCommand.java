@@ -161,7 +161,7 @@ public final class SendCommand {
                     Map<String, Double> com_arg2 = new HashMap<String, Double>();
                     if (fromClient != null) {  // ДОБАВИТЬ JSON!!!!!!!!!!!!!
                         System.out.println("received: " + fromClient);
-                        
+
                         if (fromClient.equals("exit")) {
                             toClient = "exiting";
                             System.out.println("send exiting");
@@ -199,7 +199,9 @@ public final class SendCommand {
                             System.out.println(Controlcommand);
                             session.gainVehicleControl(vehicle);
                             session.sendCommand(vehicle, Controlcommand);
-                        }catch (Exception e ) {
+                            session.releaseVehicleControl(vehicle);
+
+                        } catch (Exception e) {
                             System.out.println("error e:");
                             System.out.println(e.getMessage());
                         }
@@ -209,7 +211,6 @@ public final class SendCommand {
 //                        client.close();
 //                        server.close();
 
-                        session.releaseVehicleControl(vehicle);
                     }
 
                 }
