@@ -22,7 +22,7 @@ def sendcommand():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((HOST, PORT))
     while True:
-        print("1 - pitch,\n2 - roll,\n3 - yaw,\n4 - throttle,\n5 - takeoff,\n6 - land,\n7 - joystick")
+        print("1 - pitch,\n2 - roll,\n3 - yaw,\n4 - throttle,\n5 - takeoff,\n6 - land,\n7 - joystick\n0 - exit")
         val = input("enter command:\n")
         if val == "1":
             command = "direct_vehicle_control:pitch,0.1"

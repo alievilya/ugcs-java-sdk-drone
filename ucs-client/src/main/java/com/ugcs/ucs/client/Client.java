@@ -35,7 +35,7 @@ public class Client implements Closeable {
 	private final List<ServerNotificationListener> notificationListeners =
 			new CopyOnWriteArrayList<>();
 
-	private static final long DEFAULT_REQUEST_TIMEOUT = 10_000L;
+	private static final long DEFAULT_REQUEST_TIMEOUT = 30_000L;
 
 	public Client(SocketAddress serverAddress) {
 		if (serverAddress == null)

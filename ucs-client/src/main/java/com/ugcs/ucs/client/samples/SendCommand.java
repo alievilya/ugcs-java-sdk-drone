@@ -148,7 +148,7 @@ public final class SendCommand {
             while (flag1) {
                 Socket clientSock = server.accept();
                 System.out.println("got connection on port 8080");
-                session.gainVehicleControl(vehicle);
+//                session.gainVehicleControl(vehicle);
 //                session.sendCommand(vehicle, command_j);
 
                 while (flag2) {
@@ -195,7 +195,7 @@ public final class SendCommand {
                         try {
                             System.out.println("Controlcommand: ");
                             System.out.println(Controlcommand);
-//                            session.gainVehicleControl(vehicle);
+                            session.gainVehicleControl(vehicle);
                             session.sendCommand(vehicle, Controlcommand);
                         }catch (Exception e ) {
                             System.out.println("error e:");
@@ -207,7 +207,7 @@ public final class SendCommand {
 //                        client.close();
 //                        server.close();
 
-//                        session.releaseVehicleControl(vehicle);
+                        session.releaseVehicleControl(vehicle);
                     }
 
                 }
