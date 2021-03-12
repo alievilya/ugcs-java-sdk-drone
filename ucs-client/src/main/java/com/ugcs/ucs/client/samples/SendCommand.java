@@ -140,15 +140,18 @@ public final class SendCommand {
             String toClient;
 
             ServerSocket server = new ServerSocket(8080);
-            boolean run = true;
+
 //			session.sendCommand(vehicle, command_takeof);
 //			Thread.sleep(3500);
-            while (true) {
+            boolean flag1 = true;
+            boolean flag2 = true;
+            while (flag1) {
                 Socket clientSock = server.accept();
                 System.out.println("got connection on port 8080");
-//                session.gainVehicleControl(vehicle);
+                session.gainVehicleControl(vehicle);
 //                session.sendCommand(vehicle, command_j);
-                while (run) {
+
+                while (flag2) {
 //                    session.releaseVehicleControl(vehicle);
                     BufferedReader in = new BufferedReader(new InputStreamReader(clientSock.getInputStream()));
                     PrintWriter out = new PrintWriter(clientSock.getOutputStream(), true);
@@ -161,6 +164,9 @@ public final class SendCommand {
                             toClient = "exiting";
                             System.out.println("send exiting");
                             out.println(toClient);
+                            session.releaseVehicleControl(vehicle);
+                            flag1 = false;
+                            flag2 = false;
                             break;
                         }
 //                        session.gainVehicleControl(vehicle);
@@ -189,19 +195,24 @@ public final class SendCommand {
                         try {
                             System.out.println("Controlcommand: ");
                             System.out.println(Controlcommand);
-                            session.gainVehicleControl(vehicle);
+//                            session.gainVehicleControl(vehicle);
                             session.sendCommand(vehicle, Controlcommand);
-                        }catch (Exception e ) {System.out.println(e.getMessage());}
+                        }catch (Exception e ) {
+                            System.out.println("error e:");
+                            System.out.println(e.getMessage());
+                        }
                         toClient = "profit";
                         System.out.println("send profit");
                         out.println(toClient);
 //                        client.close();
 //                        server.close();
 
-                        session.releaseVehicleControl(vehicle);
+//                        session.releaseVehicleControl(vehicle);
                     }
 
                 }
+                System.out.println("breaked from 1st loop");
+                break;
                 // Write exceptions!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             }
