@@ -202,8 +202,8 @@ public class ClientSession {
 			}
 		}
 //		System.out.println(toString(commandStatus));
-//		if (commandStatus != CommandStatus.CS_SUCCEEDED)
-//			throw new IllegalStateException("Command error: " + commandStatus);
+		if (commandStatus != CommandStatus.CS_SUCCEEDED)
+			throw new IllegalStateException("Command error: " + commandStatus);
 
 	}
 

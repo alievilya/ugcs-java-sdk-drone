@@ -22,7 +22,7 @@ def sendcommand():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((HOST, PORT))
     while True:
-        print("1 - pitch,\n2 - roll,\n3 - yaw,\n4 - throttle,\n5 - takeoff,\n6 - land,\n7 - joystick\n0 - exit")
+        print("1 - pitch,\n2 - roll,\n3 - yaw,\n4 - throttle,\n5 - takeoff,\n6 - land,\n7 - joystick, \n8 - manual\n0 - exit,\nq - break")
         val = input("enter command:\n")
         if val == "1":
             command = "direct_vehicle_control:pitch,0.1"
@@ -46,8 +46,13 @@ def sendcommand():
             command = "land_command"
         elif val == "7":
             command = "joystick"
+        elif val == "8":
+            command = "manual"
         elif val == "0":
             command = "exit"
+
+        elif val == "c0":
+            command = "direct_payload_control:pitch,0.6"
         elif val == "q":
             break
 
@@ -71,8 +76,10 @@ def sendcommand():
 
 sendcommand()
 
-# java -cp .;* com.ugcs.ucs.client.samples.SendCommand -c joystick "EMU-101"
-# java -cp .;* com.ugcs.ucs.client.samples.SendCommand -c joystick "Mavic2EnterpriseDual-298cgbkr0a0a48"
+
+
+# java -cp .;* com.ugcs.ucs.client.samples.SendCommand "EMU-101"
+# java -cp .;* com.ugcs.ucs.client.samples.SendCommand "Mavic2EnterpriseDual-298cgbkr0a0a48"
 
 
 # sock.sendall(("yaw,-0.3\n").encode('utf-8'))
@@ -96,7 +103,3 @@ sendcommand()
 # else:
 #     print('lol')
 # sock.close()
-
-# java -cp .;* com.ugcs.ucs.client.samples.SendCommand -c direct_vehicle_control -a trottle=1 "Mavic2EnterpriseDual-298cgbkr0a0a48"
-# java -cp .;* com.ugcs.ucs.client.samples.SendCommand -c direct_vehicle_control -a trottle=1 "EMU-101"
-# java -cp .;* com.ugcs.ucs.client.samples.SendCommand -c joystick "EMU-101"

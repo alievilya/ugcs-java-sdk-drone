@@ -93,16 +93,21 @@ public final class SendCommand {
             System.exit(1);
         } else {
             try {
-                sendCommand(vehicleName, commandCode, commandArguments);
+                sendCommand(vehicleName);
+                System.out.println("out of 1st command");
+//                sendCommand(vehicleName);
+//                sendCommand(vehicleName);
             } catch (Exception e) {
                 e.printStackTrace(System.err);
                 System.exit(1);
+                System.out.println("out of main");
             }
         }
     }
 
-    public static void sendCommand(String vehicleName, String commandCode, Map<String, Double> commandArguments)
+    public static void sendCommand(String vehicleName)
             throws Exception {
+
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Properties properties = new Properties();
         try (InputStream in = classLoader.getResourceAsStream("client.properties")) {
@@ -131,10 +136,11 @@ public final class SendCommand {
             Vehicle vehicle = session.lookupVehicle(vehicleName);
             if (vehicle == null)
                 throw new IllegalStateException("Vehicle not found: " + vehicleName);
-
+            Map<String, Double> commandArguments = new HashMap<String, Double>();
             // Construct command object.
+            commandArguments.put("com", 0.0);
             Command command_j = buildCommand("joystick", commandArguments);
-            Command Controlcommand = buildCommand("joystick", commandArguments); // Подумать как нормально записать
+            Command Controlcommand = buildCommand("joystick", commandArguments); // TODO Подумать как нормально записать
             System.out.println("commands");
             String fromClient;
             String toClient;
@@ -159,7 +165,7 @@ public final class SendCommand {
                     fromClient = in.readLine();
 
                     Map<String, Double> com_arg2 = new HashMap<String, Double>();
-                    if (fromClient != null) {  // ДОБАВИТЬ JSON!!!!!!!!!!!!!
+                    if (fromClient != null) {  // TODO ДОБАВИТЬ JSON!!!!!!!!!!!!!
                         System.out.println("received: " + fromClient);
 
                         if (fromClient.equals("exit")) {
@@ -180,16 +186,41 @@ public final class SendCommand {
                             }
                             case "direct_vehicle_control": {
                                 String[] com = str[1].split(",");
+
+                                com_arg2.put("pitch", 0.0);
+                                com_arg2.put("roll", 0.0);
+                                com_arg2.put("yaw", 0.0);
+                                com_arg2.put("throttle", 0.0);
+
+
                                 com_arg2.put(com[0], new Double(com[1]));
+                                System.out.println("dir veh control argument: ");
+                                System.out.println(com_arg2); // TODO чекнуть формат ввода команды
+
                                 Controlcommand = buildCommand("direct_vehicle_control", com_arg2);
                                 break;
                             }
+                            case "direct_payload_control": {
+                                String[] com = str[1].split(",");
+                                com_arg2.put("pitch", 0.0);
+
+                                com_arg2.put(com[0], new Double(com[1]));
+                                System.out.println("dir veh control argument: ");
+                                System.out.println(com_arg2); // TODO чекнуть формат ввода команды
+
+                                Controlcommand = buildCommand("direct_payload_control", com_arg2);
+                                break;
+                            }
                             case "land_command": {
-                                Controlcommand = buildCommand("land_command", com_arg2);
+                                Controlcommand = buildCommand("land_command", commandArguments);
                                 break;
                             }
                             case "joystick": {
-                                Controlcommand = buildCommand("joystick", com_arg2);
+                                Controlcommand = buildCommand("joystick", commandArguments);
+                                break;
+                            }
+                            case "manual": {
+                                Controlcommand = buildCommand("manual", commandArguments);
                                 break;
                             }
                         }
@@ -199,29 +230,27 @@ public final class SendCommand {
                             System.out.println(Controlcommand);
                             session.gainVehicleControl(vehicle);
                             session.sendCommand(vehicle, Controlcommand);
-                            session.releaseVehicleControl(vehicle);
+
 
                         } catch (Exception e) {
                             System.out.println("error e:");
                             System.out.println(e.getMessage());
                         }
+                        session.releaseVehicleControl(vehicle);
                         toClient = "profit";
                         System.out.println("send profit");
                         out.println(toClient);
-//                        client.close();
-//                        server.close();
 
                     }
 
                 }
                 System.out.println("breaked from 1st loop");
                 break;
-                // Write exceptions!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // TODO Write exceptions!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             }
 
         }
-
 
     }
 
